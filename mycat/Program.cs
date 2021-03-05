@@ -11,7 +11,22 @@ if (args.Length < 1)
 if (args.Length == 1)
 {
     var filename = args[0];
+    PrintFile(filename);
+}
 
+if (args.Length > 1)
+{
+    List<string> concatFiles = new List<string>();
+
+    for (int i = 0; i < args.Length; i++)
+    {
+        var filename = args[i];
+        PrintFile(filename);
+    }
+}
+
+void PrintFile(string filename)
+{
     if (!File.Exists(filename))
     {
         Console.WriteLine($"No such file: {filename}");
@@ -28,32 +43,5 @@ if (args.Length == 1)
             return;
         }
         Console.WriteLine(line);
-    }
-}
-
-if (args.Length > 1)
-{
-    List<string> concatFiles = new List<string>();
-
-    for (int i = 0; i < args.Length; i++)
-    {
-        var filename = args[i];
-        if (!File.Exists(filename))
-        {
-            Console.WriteLine($"No such file: {filename}");
-            Environment.Exit(1);
-        }
-
-        using var file = new StreamReader(filename);
-        using var fileCount = new StreamReader(filename);
-        while (fileCount.ReadLine() != null)
-        {
-            var line = file.ReadLine();
-            if (line == null)
-            {
-                return;
-            }
-            Console.WriteLine(line);
-        }
     }
 }
