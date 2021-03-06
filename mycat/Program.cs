@@ -34,8 +34,7 @@ void PrintFile(string filename)
     }
 
     using var file = new StreamReader(filename);
-    using var fileCount = new StreamReader(filename);
-    while (fileCount.ReadLine() != null)
+    while (file.Peek() > -1)
     {
         var line = file.ReadLine();
         if (line == null)

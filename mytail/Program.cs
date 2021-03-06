@@ -18,11 +18,10 @@ if (!File.Exists(filename))
     Environment.Exit(1);
 }
 
-using var fileCount = new StreamReader(filename);
 using var file = new StreamReader(filename);
 List<string> lineList = new List<string>();
 int lineCounter = 0;
-while (fileCount.ReadLine() != null)
+while (file.Peek() > -1)
 {
     string line = file.ReadLine();
     lineList.Add(line);
