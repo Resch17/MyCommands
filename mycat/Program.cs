@@ -1,36 +1,18 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 
 if (args.Length < 1)
 {
-    Console.WriteLine("USAGE: myhead <filename> (optional: <filename2> <filename3> ...)");
+    Console.Error.WriteLine("USAGE: mycat <filename> (optional: <filename2> <filename3> ...)");
     Environment.Exit(1);
 }
 
-if (args.Length == 1)
-{
-    var filename = args[0];
-    PrintFile(filename);
-}
-
-if (args.Length > 1)
-{
-    List<string> concatFiles = new List<string>();
-
-    for (int i = 0; i < args.Length; i++)
-    {
-        var filename = args[i];
-        PrintFile(filename);
-    }
-}
-
-void PrintFile(string filename)
+foreach (string filename in args)
 {
     if (!File.Exists(filename))
     {
-        Console.WriteLine($"No such file: {filename}");
-        Environment.Exit(1);
+        Console.Error.WriteLine($"No such file: {filename}");
+        continue;
     }
 
     using var file = new StreamReader(filename);
