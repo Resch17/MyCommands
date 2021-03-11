@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace mygrep
@@ -15,28 +17,31 @@ namespace mygrep
             }
 
             string searchString = args[0];
-            string textPath = args[1];
-
-            if (!File.Exists(textPath))
+            string[] files = args.Skip(1).ToArray();
+            foreach (string textPath in files)
             {
-                Console.Error.WriteLine($"No such file: {textPath}");
-                Environment.Exit(1);
+                if (!File.Exists(textPath))
+                {
+                    Console.Error.WriteLine($"No such file: {textPath}");
+                    Environment.Exit(1);
+                }
+
+                using var file = new StreamReader(textPath);
+                while (file.Peek() > -1)
+                {
+                    var line = file.ReadLine();
+                    if (line == null)
+                    {
+                        return;
+                    }
+                    Match m = Regex.Match(line, searchString);
+                    if (m.Success)
+                    {
+                        Console.WriteLine(line);
+                    }
+                }
             }
 
-            using var file = new StreamReader(textPath);
-            while (file.Peek() > -1)
-            {
-                var line = file.ReadLine();
-                if (line == null)
-                {
-                    return;
-                }
-                Match m = Regex.Match(line, searchString);
-                if (m.Success)
-                {
-                    Console.WriteLine(line);
-                }
-            }
         }
     }
 }
