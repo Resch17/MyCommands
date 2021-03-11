@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace mygrep
 {
@@ -31,7 +31,8 @@ namespace mygrep
                 {
                     return;
                 }
-                if (line.Contains(searchString))
+                Match m = Regex.Match(line, searchString);
+                if (m.Success)
                 {
                     Console.WriteLine(line);
                 }
